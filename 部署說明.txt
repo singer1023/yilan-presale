@@ -1,0 +1,18 @@
+虹揚廣告 實價登錄查詢系統 PWA 版 部署說明
+
+一、Apps Script（後端，用您現有的專案）
+1. 把 Code_PWA版.gs 的全部內容貼到 Apps Script 的 Code（取代原本內容）。Index 維持原樣不用動。
+2. 選 testGetData 按「執行」。
+3. 部署 → 管理部署作業 → 鉛筆 → 版本選「新版本」→ 部署。
+   存取權限必須是「所有人」。網址不變。
+4. 在瀏覽器網址列貼：您的/exec網址?api=data  → 看到一大串 JSON 文字就成功。
+
+二、PWA 前端（本資料夾）
+1. 用記事本打開 config.js，把引號內的文字換成您的 Apps Script 網址（結尾 /exec），存檔。
+2. 把整個資料夾放到免費靜態空間，例如 Cloudflare Pages、Netlify（拖曳資料夾即可）或 GitHub Pages。
+   必須是 https 網址，PWA 才能安裝。
+3. 用手機開那個網址：
+   Android Chrome：點頁面上方「安裝」，或選單 → 安裝應用程式
+   iPhone：用 Safari → 分享 → 加入主畫面
+4. 之後更新網頁內容時，把 sw.js 第一行的 hy-shell-v1 改成 v2、v3…，手機才會抓到新版。
+   （資料更新不用改，資料每次開啟都會自動重新抓取。）

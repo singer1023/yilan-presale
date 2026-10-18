@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<title>宜蘭預售屋查詢</title>
+<meta name="theme-color" content="#b0191e">
+<meta name="application-name" content="宜蘭預售屋查詢">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="宜蘭預售屋查詢">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root { --red:#b0191e; --red-d:#8c1216; --bg:#f6f3ef; --card:#fff; --ink:#222; --mute:#777; --line:#e3ddd6; --soft:#fbeeee; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:"Microsoft JhengHei","PingFang TC","Noto Sans TC",sans-serif; }
+  header { background:#fff; border-bottom:4px solid var(--red); padding:14px 16px; display:flex; align-items:center; gap:14px; }
+  header img { width:60px; height:60px; object-fit:contain; }
+  header h1 { margin:0; font-size:22px; color:var(--red); letter-spacing:1px; }
+  header p { margin:2px 0 0; color:var(--mute); font-size:14px; }
+  header .ver { margin-left:auto; align-self:flex-start; font-size:13px; font-weight:700; color:var(--red); border:1px solid var(--red); border-radius:999px; padding:2px 10px; background:#fff; white-space:nowrap; }
+  .note ol { margin:8px 0 0; padding-left:22px; line-height:1.8; font-size:14px; color:var(--ink); }
+  .note li { margin-bottom:4px; }
+  a.dlbtn { display:inline-block; padding:9px 18px; font-size:15px; font-weight:700; color:#fff; background:var(--red); border-radius:6px; text-decoration:none; }
+  a.dlbtn:hover { background:var(--red-d); }
+  main { max-width:980px; margin:0 auto; padding:16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px; margin-bottom:16px; }
+  .card h2 { margin:0 0 12px; font-size:18px; color:var(--red-d); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px 16px; }
+  label { display:block; font-size:14px; color:var(--mute); margin-bottom:4px; }
+  select, input { width:100%; padding:10px; font-size:16px; border:1px solid #ccc; border-radius:6px; background:#fff; font-family:inherit; }
+  .btns { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+  button { padding:11px 20px; font-size:16px; border:0; border-radius:6px; cursor:pointer; font-family:inherit; }
+  .primary { background:var(--red); color:#fff; }
+  .ghost { background:#fff; color:var(--red); border:1px solid var(--red); }
+  .stat { display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 12px; background:var(--soft); border-left:5px solid var(--red); padding:12px 14px; border-radius:6px; margin-bottom:10px; }
+  .stat b { font-size:26px; color:var(--red); }
+  .stat .unit { color:var(--mute); }
+  table { width:100%; border-collapse:collapse; font-size:15px; }
+  th, td { border-bottom:1px solid var(--line); padding:9px 8px; text-align:left; white-space:nowrap; }
+  th { background:#faf7f4; color:var(--red-d); }
+  td.n, th.n { text-align:right; font-variant-numeric:tabular-nums; }
+  tr.hl td { background:var(--soft); font-weight:bold; }
+  .tablewrap { overflow-x:auto; }
+  label.allt { display:flex; align-items:center; gap:8px; cursor:pointer; color:var(--red-d); font-weight:bold; }
+  label.allt input { width:20px; height:20px; padding:0; accent-color:var(--red); }
+  select:disabled { background:#eee; color:#999; }
+  .muted { color:var(--mute); font-size:13px; }
+  a.l591 { color:var(--red); text-decoration:none; border-bottom:1px dotted var(--red); }
+  a.l591:hover { text-decoration:underline; }
+  .tag591 { font-size:12px; color:#b26b00; margin-left:4px; }
+  a.g591 { font-size:12px; color:var(--mute); margin-left:6px; text-decoration:none; }
+  .cond { font-size:14px; color:var(--ink); background:#faf7f4; padding:8px 12px; border-radius:6px; margin-bottom:14px; }
+  .credit { font-size:14px; color:var(--red-d); background:#faf7f4; border-bottom:1px solid var(--line); padding:8px 16px; text-align:center; font-weight:500; }
+  .chatbtn { padding:2px 12px; font-size:14px; font-weight:700; color:var(--red); background:#fff; border:1px solid var(--red); border-radius:999px; cursor:pointer; }
+  .credit .contact { max-width:320px; margin:8px auto 0; padding:8px 14px; background:#fff; border:1px solid var(--line); border-radius:8px; font-size:15px; line-height:1.9; text-align:left; }
+  .credit .contact a { color:var(--red); font-weight:700; }
+  #loading { text-align:center; padding:40px; color:var(--mute); }
+  .hlatest { display:inline-block; margin-top:6px; padding:3px 12px; font-size:14px; font-weight:700; color:#1b6b2f; background:#e8f6ec; border:1px solid #9fd3ad; border-radius:999px; }
+  .hline { align-self:flex-start; margin-left:auto; display:inline-flex; align-items:center; gap:6px; padding:6px 14px; font-size:14px; font-weight:700; color:#fff; background:#06c755; border-radius:999px; text-decoration:none; white-space:nowrap; }
+  .hline:hover { background:#05a748; }
+  header .hline + .ver { margin-left:0; }
+  .fab { position:fixed; right:16px; bottom:16px; z-index:50; display:flex; gap:10px; align-items:center; }
+  .fab a { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:13px 20px; font-size:17px; font-weight:700; border-radius:999px; text-decoration:none; box-shadow:0 3px 12px rgba(0,0,0,.28); }
+  .fab .fl { color:#fff; background:#06c755; }
+  .fab .fl:hover { background:#05a748; }
+  .fab .ft { color:var(--red); background:#fff; border:2px solid var(--red); }
+  .reportcard { display:flex; flex-wrap:wrap; align-items:center; gap:12px 18px; }
+  .reportcard .txt { flex:1 1 260px; line-height:1.7; font-size:15px; }
+  .reportcard .acts { display:flex; flex-wrap:wrap; gap:10px; }
+  .reportcard .acts a { display:inline-block; padding:11px 22px; font-size:16px; font-weight:700; border-radius:8px; text-decoration:none; }
+  .reportcard .acts .rl { color:#fff; background:#06c755; }
+  .reportcard .acts .rt { color:var(--red); background:#fff; border:1px solid var(--red); }
+  body { padding-bottom:86px; }
+  @media (max-width:600px) {
+    header { flex-wrap:wrap; }
+    header .hline { display:none; }
+    .fab { left:0; right:0; bottom:0; padding:10px 12px calc(10px + env(safe-area-inset-bottom)); background:#fff; border-top:1px solid var(--line); gap:10px; }
+    .fab a { flex:1 1 0; padding:13px 8px; font-size:16px; box-shadow:none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <img src="icon-192.png" alt="虹揚廣告 LOGO">
+  <div><h1>虹揚廣告有限公司</h1><p>預售實價登錄查詢</p><span class="hlatest" id="latest">資料載入中…</span></div>
+  <a class="hline" href="https://line.me/R/ti/p/%40homeyang" target="_blank" rel="noopener">💬 LINE 聯絡虹揚廣告</a>
+  <div class="ver" id="ver" title="系統版本">V4</div>
+</header>
+<div id="installBar" style="display:none;background:#fff7e6;border-bottom:1px solid #f0d9a8;padding:8px 16px;text-align:center;font-size:14px">
+<span id="installTxt">📲 把查詢系統裝到手機主畫面，像 App 一樣一點就開</span>
+<button type="button" id="installBtn" class="chatbtn" style="margin-left:8px">安裝</button>
+<div id="iosHelp" style="display:none;margin-top:6px;color:#8c1216;line-height:1.7">iPhone／iPad：請用 Safari 開啟，點下方「分享」圖示 → 選「加入主畫面」→ 按「新增」。</div>
+</div>
+<div class="credit"><span>本查詢系統&nbsp;&nbsp;&nbsp;製作人 楊明勳 ｜維護人 劉子廉｜</span><button type="button" id="chatBtn" class="chatbtn" aria-expanded="false">跟我交流 ▾</button>
+<div id="chatBox" class="contact" style="display:none">
+<div>1. Line ID：<a href="https://line.me/ti/p/~singer1023" target="_blank" rel="noopener">singer1023</a></div>
+<div>2. 官方 Line@：<a href="https://line.me/R/ti/p/%40homeyang" target="_blank" rel="noopener">homeyang</a></div>
+<div>3. 電話：<a href="tel:0926109163">0926-109-163</a></div></div></div>
+
+<main>
+  <div id="loading">資料載入中…<div class="muted" id="slow" style="margin-top:10px"></div><div class="muted" style="margin-top:6px;font-size:12px">頁面程式碼：PWA-1</div><div class="muted" id="stage" style="margin-top:6px;font-size:12px;color:#b00"></div><script>
+(function(){var st=document.getElementById("stage");function w(t){if(st)st.textContent+=t+" ｜ ";}
+window.__w=w;w("①前置腳本已執行");
+window.addEventListener("error",function(ev){w("錯誤："+ev.message+(ev.lineno?"（行"+ev.lineno+"）":""));});
+setTimeout(function(){w("③3秒後主程式"+(window.__main?"已啟動":"尚未啟動"));
+if(!window.__main){try{
+ var ss=document.getElementsByTagName("script"),best=null;
+ for(var i=0;i<ss.length;i++){var t=ss[i].textContent||"";if(t.indexOf("__main=1")>=0||t.indexOf("function initForm")>=0){best=t;}}
+ for(var j=0;j<ss.length;j++){var tj=ss[j].textContent||"";if(!tj)continue;try{new Function(tj);}catch(e2){w("【診斷】script#"+j+"（"+tj.length+"字）編譯失敗："+e2.message+" ｜開頭："+JSON.stringify(tj.slice(0,60))+" 結尾："+JSON.stringify(tj.slice(-60)));}}
+ if(!best){w("【診斷】找不到主程式區塊（script 共 "+ss.length+" 個）");}
+ else{var L=best.split("\n"),bad=-1,msg="";
+  for(var k=1;k<=L.length;k++){try{new Function(L.slice(0,k).join("\n"));}catch(e){var m=String(e.message);
+   if(!/end of input|Unterminated template|missing \)|Unexpected end/.test(m)||k===L.length){bad=k;msg=m;break;}}}
+  if(bad<0)w("【診斷】主程式單獨編譯無錯（共 "+L.length+" 行）");
+  else w("【診斷】第 "+bad+" 行："+msg+" ｜內容："+JSON.stringify(L[bad-1].slice(0,160)));}
+}catch(e){w("【診斷失敗】"+e.message);}}
+},3000);
+setTimeout(function(){w("④15秒後"+(window.__got?"已收到資料":"仍未收到資料"));},15000);
+})();
+</script></div>
+  <div id="app" style="display:none">
+  <section class="card">
+    <h2>查詢條件</h2>
+    <div class="grid">
+      <div><label>1. 成交年（起）</label><select id="y1"></select></div>
+      <div><label>2. 成交月（起）</label><select id="m1"></select></div>
+      <div><label>3. 成交年（迄）</label><select id="y2"></select></div>
+      <div><label>4. 成交月（迄）</label><select id="m2"></select></div>
+      <div style="grid-column:1/-1"><label class="allt"><input type="checkbox" id="allTime"> 5. 選取資料庫全部時間（優先於 1～4，勾選後不需選日期）</label></div>
+      <div><label>6. 鄉鎮市</label><select id="town"></select></div>
+      <div><label>7. 建物型態</label><select id="btype"></select></div>
+      <div><label>8. 個案名稱</label><input id="caseName" list="caseList" placeholder="可直接輸入，如：代官山"><datalist id="caseList"></datalist></div>
+    </div>
+    <div class="btns">
+      <button class="primary" id="qBtn">查詢</button>
+      <button class="ghost" id="allBtn">清除條件（查全部）</button>
+    </div>
+    <p class="muted" id="srcInfo"></p>
+  </section>
+
+  <div id="results"></div>
+  <section class="card">
+    <h2>發現錯誤或有疑問？</h2>
+    <div class="reportcard">
+      <div class="txt">資料有誤、數字怪怪的、系統打不開，都歡迎直接傳訊息給我們。按下綠色按鈕會開啟虹揚廣告官方帳號 <b>@homeyang</b>（手機會直接開啟 LINE，電腦會開啟 LINE 或網頁版），並自動帶入版本與資料日期，方便我們查證。</div>
+      <div class="acts"><a class="rl" id="rptLine" href="https://line.me/R/ti/p/%40homeyang" target="_blank" rel="noopener">💬 LINE 錯誤回報</a><a class="rt" href="tel:0926109163">📞 電話聯絡</a></div>
+    </div>
+  </section>
+  <section class="card note">
+    <h2>總表說明</h2>
+    <ol>
+      <li>本資料庫由內政部實價登錄網站下載，起算為111年第一季報表，因內政部以『備查日』所為季報基準，非以『成交日』，本系統沿用內政部資料，所有季度筆數皆與內政部相同。</li>
+      <li>開啟系統時會抓取製作人google 硬碟資料，稍微會花些時間。</li>
+      <li>原111~114年間，建物型態（欄L）有5樓以下公寓、套房1房1廳1衛，目前已取消，製表者微調資料以簡化表格。</li>
+      <li>原交易筆棟數（欄I），車位數量無法統計，新增車位校正儲存欄（欄AG）。</li>
+      <li>因交易筆數眾多，原始資料『備註』（欄AA）：成交筆數及總金額皆包含：親友、員工、共有人或其他特殊關係間之交易；如需排除，請於原始檔手動開篩選。</li>
+      <li>因交易筆數眾多，原始資料『備註』（欄AA）：農地無論贈送或購買持分，成交總金額皆包含農地價格，不另行拆分；如需排除，請於原始檔手動開篩選。</li>
+      <li>原始資料『備註』（欄AA）：含裝修戶別價金影響大，工作表『金額統計』含裝修金額，工作表『單價統計』則剔除裝潢。</li>
+      <li>大吉築青華廈車位登記方式異於其他個案，其餘單獨購買車位之資料，多為已登錄戶別增購車位。</li>
+      <li>解約（欄AE）仍列入統計，如需排除，請於原始檔手動開篩選。</li>
+    </ol>
+    <p style="margin:12px 0 0"><a id="dl" class="dlbtn" href="#" target="_blank" rel="noopener" style="display:none">⬇ 原始檔案下載</a></p>
+  </section>
+  </div>
+<p class="muted" style="text-align:center;margin:0 0 4px;font-size:12px">系統版本與頁面程式碼：<span id="ver2"></span>｜PWA-1</p>
+<p id="myCid" class="muted" style="text-align:center;margin:4px 0 28px"></p>
+</main>
+
+<div class="fab"><a class="ft" href="tel:0926109163">📞 電話</a><a class="fl" href="https://line.me/R/ti/p/%40homeyang" target="_blank" rel="noopener">💬 LINE 聯絡虹揚廣告</a></div>
+<script src="config.js"></script>
+<script>
+window.__main=1; if(window.__w) window.__w("②主程式已載入");
+const H = "https:/" + "/";
+const TOWNS = ["宜蘭市","頭城鎮","礁溪鄉","壯圍鄉","員山鄉","羅東鎮","蘇澳鎮","冬山鄉","五結鄉","三星鄉","大同鄉","南澳鄉"];
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let ROWS = [];  
+
+function fill(el, items, val){
+  el.innerHTML = items.map(([v,t]) => `<option value="${esc(v)}">${esc(t)}</option>`).join("");
+  el.value = val;
+}
+function initForm(){
+  const years = [["","不限"]]; for (let y=113; y<=118; y++) years.push([y, y+"年"]);
+  const months = [["","不限"]]; for (let m=1; m<=12; m++) months.push([m, m+"月"]);
+  fill($("y1"), years, 115); fill($("m1"), months, 6);
+  fill($("y2"), years, 115); fill($("m2"), months, 6);
+  fill($("btype"), [["","全部建物型態"],["透天","僅篩選透天"],["華廈","僅篩選華廈(10層含以下)"],["大樓","僅篩選住宅大樓(11層含以上)"],["華廈大樓","篩選華廈、住宅大樓"]], "");
+  fill($("town"), [["","全部鄉鎮市"], ...TOWNS.map(t=>[t,t])], "");
+  const names = [...new Set(ROWS.map(r=>r[2]).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"zh-Hant"));
+  $("caseList").innerHTML = names.map(n => `<option value="${esc(n)}">`).join("");
+}
+
+
+function unitPrice(rows){
+  let P=0, Y=0, V=0, Z=0, D=0;
+  rows.forEach(r => { P+=r[3]; Y+=r[4]; V+=r[5]; Z+=r[6]; D+=(r[8]||0); });
+  return (P-Y) > 0 ? (V-Z-D)/(P-Y)/0.3025/10000 : null;
+}
+const fmt = v => v == null ? "-" : v.toFixed(2);
+
+function getCond(){
+  if ($("allTime").checked) return { from:null, to:null, all:true, town:$("town").value, kw:$("caseName").value.trim().toLowerCase() };
+  const y1 = $("y1").value, m1 = $("m1").value, y2 = $("y2").value, m2 = $("m2").value;
+  return {
+    from: y1 ? (+y1)*100 + (+m1 || 1) : null,
+    to:   y2 ? (+y2)*100 + (+m2 || 12) : null,
+    town: $("town").value,
+    kw:   $("caseName").value.trim().toLowerCase()
+  };
+}
+function condText(c){
+  const ym = v => `${Math.floor(v/100)}年${v%100}月`;
+  const p = c.all ? "全部時間（資料庫全部）" : c.from && c.to ? `${ym(c.from)} ~ ${ym(c.to)}` : c.from ? `${ym(c.from)} 起` : c.to ? `至 ${ym(c.to)}` : "全部期間";
+  return `查詢條件：${p}｜${c.town || "全部鄉鎮市"}${$("btype").value ? "｜" + $("btype").selectedOptions[0].text : ""}${c.kw ? "｜個案含「" + esc($("caseName").value.trim()) + "」" : ""}`;
+}
+
+function query(){
+  const c = getCond();
+  if (c.from && c.to && c.from > c.to) { $("results").innerHTML = `<section class="card"><p>起始年月不可晚於結束年月。</p></section>`; return; }
+  const bt = $("btype").value;
+  const typeOk = r => { const t = String(r[7] || ""); return !bt || (bt === "透天" && t.includes("透天")) || (bt === "華廈" && t.includes("華廈")) || (bt === "大樓" && t.includes("住宅大樓")) || (bt === "華廈大樓" && (t.includes("華廈") || t.includes("住宅大樓"))); };
+  const inDate = ROWS.filter(r => (!c.from || r[1] >= c.from) && (!c.to || r[1] <= c.to) && typeOk(r));
+  const inTown = inDate.filter(r => !c.town || r[0] === c.town);
+  const inCase = inTown.filter(r => !c.kw || r[2].toLowerCase().includes(c.kw));
+  let html = `<div class="cond">${condText(c)}　共 <b>${inCase.length}</b> 筆</div>`;
+
+ 
+  html += `<section class="card"><h2>1. 本行政區平均成交單價</h2>`;
+  if (c.town) {
+    html += `<div class="stat"><span>${esc(c.town)}</span><b>${fmt(unitPrice(inTown))}</b><span class="unit">萬元/坪</span><span class="muted">（${inTown.length} 筆）</span></div>`;
+  } else {
+    html += `<div class="tablewrap"><table><thead><tr><th>鄉鎮市區</th><th class="n">筆數</th><th class="n">單價（萬元/坪）</th></tr></thead><tbody>`;
+    TOWNS.forEach(t => { const rs = inDate.filter(r => r[0]===t);
+      html += `<tr><td>${t}</td><td class="n">${rs.length}</td><td class="n">${fmt(unitPrice(rs))}</td></tr>`; });
+    html += `<tr class="hl"><td>全宜蘭</td><td class="n">${inDate.length}</td><td class="n">${fmt(unitPrice(inDate))}</td></tr></tbody></table></div>`;
+  }
+  html += `</section>`;
+
+ 
+  html += `<section class="card"><h2>2. 特定個案平均成交單價</h2>`;
+  if (!c.kw) {
+    html += `<p class="muted">請在「個案名稱」輸入建案名稱後查詢。</p>`;
+  } else {
+    const g = group(inCase);
+    if (!g.length) html += `<p>查無符合「${esc($("caseName").value.trim())}」的個案。</p>`;
+    else if (g.length === 1) html += `<div class="stat"><span>${esc(g[0].name)}（${esc(g[0].town)}）</span><b>${fmt(g[0].price)}</b><span class="unit">萬元/坪</span><span class="muted">（${g[0].n} 戶）</span></div>`;
+    else html += table(g, false) + `<p class="muted">名稱含關鍵字的個案共 ${g.length} 個；合併平均 ${fmt(unitPrice(inCase))} 萬元/坪。</p>`;
+  }
+  html += `</section>`;
+
+ 
+  const rank = group(inCase);
+  html += `<section class="card"><h2>3. 銷售排行榜</h2>`;
+  html += rank.length ? table(rank, true) : `<p class="muted">此條件下查無成交資料。</p>`;
+  html += `</section>`;
+
+  $("results").innerHTML = html;
+}
+
+
+function group(rows){
+  const m = new Map();
+  rows.forEach(r => { const k = r[0] + "|" + r[2]; if (!m.has(k)) m.set(k, { town:r[0], name:r[2] || "（未填建案名稱）", rows:[] }); m.get(k).rows.push(r); });
+  return [...m.values()].map(g => ({ ...g, n:g.rows.length, price:unitPrice(g.rows) }))
+    .sort((a,b) => b.n - a.n || (b.price||0) - (a.price||0));
+}
+let L591 = {}, LJ = {};
+
+function ctrlCell(x){
+  const u = LJ[x.town + "|" + x.name];
+  if (u) return `<a class="l591" href="${esc(u)}" target="_blank" rel="noopener" title="樂居 銷控表模式">銷控表</a>`;
+  return `<a class="g591" style="margin-left:0" href="${H}www.google.com/search?q=${encodeURIComponent("site:leju.com.tw " + x.name + " " + x.town + " 銷控表")}" target="_blank" rel="noopener" title="樂居查無，改用 Google 搜尋">🔍</a>`;
+}
+function nameCell(x){
+  const v = L591[x.town + "|" + x.name];
+  if (v) return `<a class="l591" href="${H}newhouse.591.com.tw/${esc(v[0])}" target="_blank" rel="noopener" title="591：${esc(v[1])}">${esc(x.name)}</a>` + (v[2] === "待確認" ? `<span class="tag591">(591待確認)</span>` : "");
+  return esc(x.name) + `<a class="g591" href="${H}www.google.com/search?q=${encodeURIComponent(x.name + " " + x.town + " 591 預售")}" target="_blank" rel="noopener" title="591 查無對應，改用 Google 搜尋">🔍</a>`;
+}
+function table(g, ranked){
+  let h = `<div class="tablewrap"><table><thead><tr>${ranked?'<th class="n">排名</th>':''}<th>社區（建案名稱）</th><th>銷控表</th><th>鄉鎮市區</th><th class="n">戶數</th><th class="n">平均單價（萬元/坪）</th></tr></thead><tbody>`;
+  let rank = 0, prev = null;
+  g.forEach((x,i) => { if (x.n !== prev) { rank = i+1; prev = x.n; }
+    h += `<tr>${ranked?`<td class="n">${rank}</td>`:''}<td>${nameCell(x)}</td><td>${ctrlCell(x)}</td><td>${esc(x.town)}</td><td class="n">${x.n} 戶</td><td class="n">${fmt(x.price)}</td></tr>`; });
+  return h + `</tbody></table></div>`;
+}
+
+const syncAll = () => ["y1","m1","y2","m2"].forEach(id => $(id).disabled = $("allTime").checked);
+$("allTime").onchange = () => { syncAll(); query(); };
+$("chatBtn").onclick = () => { const b = $("chatBox"), open = b.style.display === "none"; b.style.display = open ? "block" : "none"; $("chatBtn").setAttribute("aria-expanded", open); $("chatBtn").textContent = open ? "跟我交流 ▴" : "跟我交流 ▾"; };
+$("qBtn").onclick = query;
+$("allBtn").onclick = () => { $("allTime").checked = false; syncAll(); ["y1","m1","y2","m2","town","btype"].forEach(id => $(id).value = ""); $("caseName").value = ""; query(); };
+$("btype").onchange = query;
+$("caseName").onkeydown = e => { if (e.key === "Enter") query(); };
+
+let _t0 = Date.now();
+const _slow = setInterval(() => { const s = Math.round((Date.now() - _t0) / 1000); if ($("slow")) $("slow").textContent = s >= 8 ? `已等待 ${s} 秒（首次開啟需讀取雲端資料，約 10～40 秒；之後會較快）` : ""; }, 1000);
+function _st(t){ if(window.__w) window.__w(t); }
+window.addEventListener("error", ev => _st("網頁錯誤：" + ev.message + (ev.lineno ? "（第 " + ev.lineno + " 行）" : "")));
+_st("狀態：已向伺服器要求資料…");
+function onData(d){ try {
+    if (d && d.error) throw new Error("伺服器讀取資料失敗：" + d.error);
+    window.__got=1; _st("狀態：已收到資料" + (d && d.rows ? " " + d.rows.length + " 筆" : "（內容為空）") + "，正在顯示…");
+    clearInterval(_slow);
+    ROWS = d.rows; L591 = d.l591 || {}; LJ = d.lj || {}; if (d.version) { $("ver").textContent = d.version; $("ver2").textContent = d.version; }
+    if (d.fileId) { const a = $("dl"); a.href = H + "docs.google.com/spreadsheets/d/" + encodeURIComponent(d.fileId) + "/export?format=xlsx"; a.style.display = "inline-block"; }
+    const yms = ROWS.map(r => r[1]);
+    const ym = v => `${Math.floor(v/100)}年${v%100}月`;
+    $("srcInfo").textContent = `資料來源：「實價登錄」預售屋買賣 ${ROWS.length} 筆` +
+      (yms.length ? `（成交 ${ym(Math.min(...yms))} ~ ${ym(Math.max(...yms))}）` : "") +
+      `，更新於 ${d.updated}` + (d.skipped ? `；${d.skipped} 筆交易日期無法辨識已略過` : "");
+    const lt = d.latest || "";
+    $("latest").textContent = "✔ 資料已是最新：" + (lt || ("更新於 " + d.updated));
+    try {
+      const msg = "【實價登錄系統回報】\n版本：" + (d.version || "") + "\n資料：" + (lt || d.updated) + "\n問題說明：";
+      $("rptLine").href = H + "line.me/R/oaMessage/%40homeyang/?" + encodeURIComponent(msg);
+    } catch (e) {}
+    initForm(); query();
+    try {  
+      let cid = ""; try { cid = localStorage.getItem("hy_cid") || ""; } catch (e) {}
+      if (!cid) { cid = Math.random().toString(36).slice(2, 10) + Date.now().toString(36); try { localStorage.setItem("hy_cid", cid); } catch (e) {} }
+      $("myCid").textContent = "本機裝置代碼：" + cid;
+      if (!window.__logged && navigator.onLine) { window.__logged = 1;
+        fetch(API_URL + "?api=log&cid=" + encodeURIComponent(cid) + "&device=" + encodeURIComponent(/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? "手機" : "電腦"), { mode: "no-cors" }).catch(() => {}); }
+    } catch (e) {}
+    $("loading").style.display = "none"; $("app").style.display = "block";
+  } catch (e) { clearInterval(_slow); _st("顯示失敗：" + (e && e.message ? e.message : e)); } }
+const CK = "hy_data_v1";
+function readCache(){ try { const s = localStorage.getItem(CK); return s ? JSON.parse(s) : null; } catch (e) { return null; } }
+function writeCache(d){ try { localStorage.setItem(CK, JSON.stringify(d)); } catch (e) {} }
+function offlineNote(msg){ const el = $("srcInfo"); if (el) el.textContent += msg; }
+async function load(){
+  if (typeof API_URL === "undefined" || !API_URL || API_URL.indexOf("script.google.com") < 0) { clearInterval(_slow); _st("尚未設定資料網址：請編輯 config.js，貼上 Apps Script 網頁應用程式網址（結尾 /exec）"); return; }
+  const cached = readCache();
+  if (cached && cached.rows) { onData(cached); }
+  try {
+    const r = await fetch(API_URL + "?api=data", { cache: "no-store" });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const d = await r.json();
+    if (d && d.error) throw new Error(d.error);
+    if (!cached || cached.updated !== d.updated || cached.version !== d.version) { writeCache(d); onData(d); }
+    else { writeCache(d); }
+  } catch (e) {
+    if (cached && cached.rows) { offlineNote("　（目前離線或連線失敗，顯示的是上次儲存的資料）"); }
+    else { clearInterval(_slow); _st("無法取得資料：" + (e && e.message ? e.message : e) + "（請確認網路，並確認 Apps Script 已部署為「所有人」可存取）"); }
+  }
+}
+load();
+let _dip = null;
+const _standalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone;
+const _ios = /iPad|iPhone|iPod/.test(navigator.userAgent);
+if (!_standalone) {
+  window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); _dip = e; $("installBar").style.display = "block"; });
+  if (_ios) { $("installBar").style.display = "block"; $("installBtn").textContent = "怎麼安裝？"; }
+  $("installBtn").onclick = () => { if (_dip) { _dip.prompt(); _dip = null; $("installBar").style.display = "none"; } else { $("iosHelp").style.display = "block"; } };
+}
+window.addEventListener("appinstalled", () => { $("installBar").style.display = "none"; });
+if ("serviceWorker" in navigator) { window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); }); }
+</script>
+</body>
+</html>
